@@ -123,7 +123,7 @@ const InformaBotScreen = ({ selectedDoc, documentList, getTable, rows, columns }
 
         if (inputText.trim() !== '') {
 
-            if (getQuestion !== '' && getAnswer !== '') {
+            if (getQuestion !== '' && data !== null) {
 
                 const newChats = [
 
@@ -131,7 +131,7 @@ const InformaBotScreen = ({ selectedDoc, documentList, getTable, rows, columns }
 
                     {
                         question: getQuestion,
-                        answer: getAnswer,
+                        data: data,
                     }
 
                 ]
@@ -289,7 +289,7 @@ const InformaBotScreen = ({ selectedDoc, documentList, getTable, rows, columns }
                 
                 <div className='flex justify-between font-normal mb-3' style={{ letterSpacing: 0.5 }}>
 
-                    <div>AI Assistant</div>
+                    <div>Sales Assistant</div>
 
                 </div>
                 
@@ -297,7 +297,7 @@ const InformaBotScreen = ({ selectedDoc, documentList, getTable, rows, columns }
 
                 <div ref={conversationRef} className='h-[85%] overflow-y-auto border my-3 p-4 hide-scrollbar scroll-smooth'>
 
-                    {/* {!!conversation && conversation.map((chat, index) => (
+                    {!!conversation && conversation.map((chat, index) => (
 
                         <div className='flex flex-col' key={`bot-chat-${index}`}>
 
@@ -317,33 +317,18 @@ const InformaBotScreen = ({ selectedDoc, documentList, getTable, rows, columns }
 
                                 <div><FaMagic color='#0066FF' /></div>
 
-                                {typeof chat.answer === 'string' ? 
-                                
-                                    <div className='bg-gray-100 p-3 rounded-xl rounded-bl-none'>
-                                        {chat.answer}
-                                    </div>
+                                <div className='bg-gray-100 p-3 rounded-xl w-[40%] rounded-bl-none'>
 
-                                : 
+                                    <Chart chartData={chat.data} />
+                                    <div className='p-3'>{chat.data.explanation}</div>
 
-                                    <div className='overflow-auto h-[300px] w-[400px]'>
-                                        <div className='flex justify-center items-center h-full'>
-                                            <LineChart width={400} height={300} data={chat.answer.chartsData}>
-                                                <CartesianGrid strokeDasharray="3 3" />
-                                                <XAxis dataKey={chat.answer.XAxisName} />
-                                                <YAxis />
-                                                <Legend />
-                                                <Line type="monotone" dataKey={chat.answer.YAxisName} stroke="#0066FF" />
-                                            </LineChart>
-                                        </div>
-                                    </div>
-
-                                }
+                                </div>
 
                             </div>
 
                         </div>
 
-                    ))} */}
+                    ))}
 
                     {isItFirstChat ?
 
@@ -439,7 +424,7 @@ const InformaBotScreen = ({ selectedDoc, documentList, getTable, rows, columns }
 
                     <div className='flex justify-between items-center'>
 
-                        <textarea ref={textAreaRef} value={inputText} rows={1} onChange={handleChangeText} onKeyDown={handleEnter} className='w-[90%] outline-none resize-none border-none' placeholder='Ask here...'></textarea>
+                        <textarea ref={textAreaRef} disabled={loader} value={inputText} rows={1} onChange={handleChangeText} onKeyDown={handleEnter} className='w-[90%] outline-none resize-none border-none' placeholder='Ask here...'></textarea>
 
                         <button disabled={inputText === ''} onClick={handleClick} className={`rounded-md bg-[#0066FF] p-2 w-8 h-8 flex justify-center items-center ${inputText === '' ? 'opacity-50' : 'hover:bg-[#033f9a] opacity-100 transition-all duration-200'}`}>
                             <IoSend color='#FFFFFF' size={14} />
