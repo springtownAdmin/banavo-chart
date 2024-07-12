@@ -81,12 +81,6 @@ const data = [
     }
 ];
   
-const summary = [
-    {
-      name: 'Total Annual Sales',
-      value: data.reduce((sum, record) => sum + record.AnnualSales, 0),
-    }
-];
 
 const valueFormatter = (number) => `${Intl.NumberFormat('us').format(number).toString()}`;
 
@@ -94,16 +88,26 @@ const statusColor = {
     'Total Annual Sales': 'bg-blue-500',
 };
   
-export const LineChartUsageExample = () => {
+export const LineChartUsageExample = ({ data }) => {
+
+    const keys = Object.keys(data[0]);
+
+    const summary = [
+      {
+        name: `Total ${data[1]}`,
+        value: data.reduce((sum, record) => sum + record[keys[1]], 0),
+      }
+    ];
+
     return (
         <Card className="sm:mx-auto sm:max-w-md w-[400px]">
-            <h3 className="text-tremor-default font-medium text-tremor-content-strong dark:text-dark-tremor-content-strong">
+            {/* <h3 className="text-tremor-default font-medium text-tremor-content-strong dark:text-dark-tremor-content-strong">
                 Annual Sales Over Years
-            </h3>
+            </h3> */}
             <LineChart
                 data={data}
-                index="date"
-                categories={['AnnualSales']}
+                index={keys[0]}
+                categories={[keys[1]]}
                 colors={['blue']}
                 valueFormatter={valueFormatter}
                 showLegend={false}
@@ -116,7 +120,8 @@ export const LineChartUsageExample = () => {
                     <ListItem key={item.name}>
                         <div className="flex items-center space-x-2">
                             <span
-                                className={classNames(statusColor[item.name], 'h-0.5 w-3')}
+                                // className={classNames(statusColor[item.name], 'h-0.5 w-3')}
+                                className={'h-0.5 w-3 bg-blue-500'}
                                 aria-hidden={true}
                             />
                             <span>{item.name}</span>

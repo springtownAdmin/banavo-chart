@@ -14,6 +14,7 @@ import { BsThreeDots } from 'react-icons/bs';
 import { Close } from '@mui/icons-material';
 import Loader from './loader';
 import { Chart } from '@/components';
+import axios from 'axios';
 
 
 const InformaBotScreen = ({ selectedDoc, documentList, getTable, rows, columns }) => {
@@ -32,8 +33,9 @@ const InformaBotScreen = ({ selectedDoc, documentList, getTable, rows, columns }
     const menuRef = useRef(null);
 
     const [selectedValue, setSelectedValue] = useState(selectedDoc);
-    const [chartData, setChartData] = useState({ type: '', keys: [], Xdata: [], Ydata: [] });
+    const [chartData, setChartData] = useState(null);
     const [first, setFirst] = useState(true);
+    const [data, setData] = useState(null);
 
 
     // useEffect(() => {
@@ -149,7 +151,12 @@ const InformaBotScreen = ({ selectedDoc, documentList, getTable, rows, columns }
             setQuestion(inputText);
             setInputText('');
 
-            // const resp = await API.post('/query_csv', { query: inputText });
+            const resp = await axios.post('https://2ba5-13-58-56-77.ngrok-free.app/generate_chart', { query : inputText });
+            const result = resp.data;
+
+            setData(result);
+
+            console.log(result);
             // typeof resp.data.response === 'string' && setAnswer(resp.data.response);
             
             // if (typeof resp.data.response === 'object') {
@@ -408,40 +415,12 @@ const InformaBotScreen = ({ selectedDoc, documentList, getTable, rows, columns }
 
                                         <div><FaMagic color='#0066FF' /></div>
 
-                                        {typeof getAnswer === 'string'
-                                        
-                                        ?
-                                            <div className='bg-gray-100 p-3 rounded-xl w-[25%] rounded-bl-none'>
+                                        <div className='bg-gray-100 p-3 rounded-xl w-[40%] rounded-bl-none'>
 
-                                                {/* {getAnswer} */}
-                                                <Chart chartData={chartData} />
-                                                <div className='p-3'>
-                                                This SQL query retrieves the total net sales for each year from the 'shoplc_sales_salesorder' table. It first converts the 'OrderDate' to a timestamp format and then extracts the year from this timestamp. The query then groups the sales data by this extracted year. For each year, it sums up the 'TotalNetAmount' to calculate the annual sales. The result is a list of years along with their corresponding annual sales.
-                                                </div>
+                                            <Chart chartData={data} />
+                                            <div className='p-3'>{data.explanation}</div>
 
-                                            </div>
-
-                                        :
-
-                                            <div>
-                                                <div className='flex justify-center items-center h-full'>
-                                                    {/* <LineChart width={400} height={300} data={getAnswer.chartsData}>
-                                                        <CartesianGrid strokeDasharray="3 3" />
-                                                        <XAxis dataKey={getAnswer.XAxisName} />
-                                                        <YAxis />
-                                                        <Legend />
-                                                        <Line type="monotone" dataKey={getAnswer.YAxisName} stroke="#0066FF" />
-                                                    </LineChart> */}
-                                                </div>
-                                            </div>
-
-                                        }
-
-                                        {/* <div className='bg-gray-100 p-3 rounded-xl rounded-bl-none'>
-
-                                            {getAnswer}
-
-                                        </div> */}
+                                        </div>
 
                                     </div>
 

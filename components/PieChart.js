@@ -1,5 +1,6 @@
 "use client";
 
+import { getColors, getRandomColor } from '@/helper/constants';
 import { Card, DonutChart, List, ListItem } from '@tremor/react';
 import React from 'react'
 
@@ -71,40 +72,46 @@ const currencyFormatter = (number) => {
     return '$' + Intl.NumberFormat('us').format(number).toString();
 };
   
-export const PieChartUsageExample = () => {
+export const PieChartUsageExample = ({ data }) => {
+
+    const keys = Object.keys(data[0]);
+    const pieColors = getColors(data.length);
+
+    console.log(pieColors)
+  
     return (
         <>
-          <Card className="sm:mx-auto sm:max-w-lg">
+          <Card className="w-full">
             {/* <h3 className="text-tremor-default font-medium text-tremor-content-strong dark:text-dark-tremor-content-strong">
               Total expenses by category
             </h3> */}
             <DonutChart
-              className="mt-8 h-[200px]"
-              data={chartdata}
-              category="Total Sales"
+              className="mt-8 h-[300px]"
+              data={data}
+              category={`${keys[1]}`}
               variant='pie'
-              index="name"
+              index={`${keys[0]}`}
               valueFormatter={currencyFormatter}
               showTooltip={true}
-              colors={['cyan', 'blue', 'indigo', 'violet', 'fuchsia', 'red']}
+              colors={pieColors}
             />
             <p className="mt-8 flex items-center justify-between text-tremor-label text-tremor-content dark:text-dark-tremor-content">
-              <span>Category</span>
-              {/* <span>Amount / Share</span> */}
+              <span>{keys[0]}</span>
             </p>
             <List className="mt-2">
-              {chartdata.map((item) => (
-                <ListItem key={item.name} className="space-x-6">
+              {data.map((item, i) => (
+                <ListItem key={item[keys[0]]} className="space-x-6">
                   <div className="flex items-center space-x-2.5 truncate">
                     <span
                       className={classNames(
-                        item.color,
+                        pieColors[i],
                         'h-2.5 w-2.5 shrink-0 rounded-sm',
                       )}
+                      // className={'h-2.5 w-2.5 shrink-0 rounded-sm'}
                       aria-hidden={true}
                     />
                     <span className="truncate dark:text-dark-tremor-content-emphasis">
-                      {item.name}
+                      {item[keys[0]]}
                     </span>
                   </div>
                 </ListItem>
@@ -112,5 +119,6 @@ export const PieChartUsageExample = () => {
             </List>
           </Card>
         </>
-      );
+    );
+
 }

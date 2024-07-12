@@ -40,3 +40,28 @@ export const snakeCaseToTitleCase = (text) => {
         .join(' ');
         
 }
+
+export const getRandomColor = () => {
+    // Generate a random number between 0 and 16777215 (decimal) and convert it to a hex string
+    const randomColor = Math.floor(Math.random() * 16777215).toString(16);
+    // Ensure the hex string is 6 characters long by padding with zeros if necessary
+    return `#${randomColor.padStart(6, '0')}`;
+}
+
+export const getColors = (length) => {
+
+    const colors = ['red', 'green', 'blue', 'pink', 'purple', 'teal', 'yellow', 'lime', 'amber', 'cyan', 'violet', 'fuchsia', 'rose', 'orange'];
+
+    if(length <= 14) {
+
+        return colors.slice(0, length);
+        
+    } else {
+
+        const newColors = [ ...colors, ...colors, ...colors ];
+
+        return newColors.slice(0, length);
+
+    }
+
+}

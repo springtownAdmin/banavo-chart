@@ -39,6 +39,8 @@ export function BarChartUsageExample({ data }) {
 
   // });
 
+  const keys = Object.keys(data[0]);
+
 
   return (
 
@@ -48,9 +50,9 @@ export function BarChartUsageExample({ data }) {
       </h3> */}
       <BarChart
         className="mt-6"
-        data={chartdata}
-        index={`name`}
-        categories={['Total Sales']}
+        data={data}
+        index={`${keys[0]}`}
+        categories={[keys[1]]}
         colors={['blue']}
         valueFormatter={dataFormatter}
         yAxisWidth={48}
